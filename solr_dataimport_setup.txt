@@ -38,7 +38,7 @@ Installing ODBC MySQL driver
 Enabling dataimporthandler.
 * cd ~
 * cp xpand_solr_setup/data-config.xml /var/solr/data/dih1/conf 
-open your data-config.xml file and make changes for the mysql connections according to your host, user and password for mysql
+open your /var/solr/data/dih1/conf/data-config.xml file and make changes for the mysql connections according to your host, user and password for mysql
 
 RESTART SOLR
 * sudo service solr restart
