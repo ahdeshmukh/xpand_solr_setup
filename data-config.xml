@@ -1,0 +1,11 @@
+<dataConfig>
+  <dataSource type="JdbcDataSource" 
+              driver="com.mysql.jdbc.Driver"
+              url="jdbc:mysql://127.0.0.1:3306/solr_tutorial" 
+              user="root" 
+              password="password"/>
+  <document>
+    <entity name="id" query="select id,firstname,lastname,description,created from person">
+    </entity>
+  </document>
+</dataConfig>
