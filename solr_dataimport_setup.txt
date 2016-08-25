@@ -1,0 +1,66 @@
+SOLR INSTALLATION AND INDEXING DATA USING DATAIMPORTHANDLER
+
+These steps have been performed on 32 bit Ubuntu 16.04 system. We are installing solr-6.1.0
+You may have to make changes to the script based on your system.
+
+Anything marked with * is an actual Linux command which you need to run
+
+* cd ~
+* git clone https://github.com/ahdeshmukh/xpand_solr_setup.git
+
+* wget http://apache.claz.org/lucene/solr/6.1.0/solr-6.1.0.tgz
+* tar xzf solr-6.1.0.tgz solr-6.1.0/bin/install_solr_service.sh --strip-components=2
+* sudo bash ./install_solr_service.sh solr-6.1.0.tgz -u amit (amit = an already existing non-root user with sudo privileges who will own the solr files. if -u is not specified the script will create a user "solr" who will own the solr files)
+After you see the output of the service which says Started LSB: Controls Apache Solr as a Service, press q to get back the control of the terminal.
+
+To confirm if install was fine and to access solr, go to http://localhost:8983/solr (if everything goes well, you should see a solr admin page)
+
+CREATING A CORE
+* cd /opt/solr
+* bin/solr create -c dih1 (creates a core called dih1. You can verify by going to http://localhost:8983/solr and see dih1 core in the Core selector list). This command will create a dih1 folder in /var/solr/data.
+
+By default solr 6.1.0 does not create schema.xml file, but creates a managed-schema file. To switch to schema.xml (which I recommend for us, as managed-schema can be for advanced users), we need to do the following
+* cd ~
+* cp xpand_solr_setup/schema.xml /var/solr/data/dih1/conf
+* cp xpand_solr_setup/solrconfig.xml /var/solr/data/dih1/conf
+* rm /var/solr/data/dih1/conf/managed-schema
+
+DATAIMPORTHANDLER
+
+Installing ODBC MySQL driver
+* cd /opt/solr/contrib/dataimporthandler-extras/lib
+* sudo wget http://dev.mysql.com/get/Downloads/Connector-J/mysql-connector-java-5.1.39.tar.gz (I hope this version of the driver will be compatible with your mysql version)
+* sudo tar xvf mysql-connector-java-5.1.39.tar.gz
+* sudo mv mysql-connector-java-5.1.39/mysql-connector-java-5.1.39-bin.jar .
+* sudo rm -rf mysql-connector-java-5.1.39
+* sudo rm mysql-connector-java-5.1.39.tar.gz
+
+Enabling dataimporthandler.
+* cd ~
+* cp xpand_solr_setup/data-config.xml /var/solr/data/dih1/conf 
+
+RESTART SOLR
+* sudo service solr restart
+
+Time to start importing data from mysql. But first we will create a sample database with some data. Refer to solr.sql file I am sending along with the email. Store it in the ~ directory
+
+* cd ~
+* mysql -u root -p < xpand_solr_setup/solr.sql (Connecting as root is not recommended, it is better to connect as some other user, but for now we will just use root user).
+This will create a new database solr_tutorial and a person table inside it.
+
+Go to http://localhost:8983/solr/#/dih1/dataimport
+Check Auto-Refresh status and hit Execute. If everything goes well, your records from mysql will be indexed.
+Go to http://localhost:8983/solr/#/dih1/query and hit Execute Query. You should see the records that just got indexed.
+
+
+SOME ADDITIONAL INFORMATION
+
+Solr commands (make sure the current user has sudo priviliges, otherwise you will get an error)
+start => sudo service solr start
+stop => sudo service solr stop
+restart => sudo service solr restart
+
+By default, the service installation script will extract the distribution archive into /opt/solr. The script creates a symlink called solr in /opt.
+
+Separate Directory for Writable Files
+You should also separate writable Solr files into a different directory. By default, the installation script uses /var/solr, but you can override this location using the -d option. With this approach, the files in /opt/solr will remain untouched and all files that change while Solr is running will live under /var/solr.
