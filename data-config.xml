@@ -5,7 +5,11 @@
               user="root" 
               password="password"/>
   <document>
-    <entity name="id" query="select id,firstname,lastname,description,created from person">
+    <entity name="person" pk="id" 
+      query="select id,firstname,lastname,description,created_time, updated_time from person" 
+      deltaImportQuery="select id,firstname,lastname,description,created_time, updated_time from person where id = '${dih.delta.id}'" 
+      deltaQuery="select id from person where CONVERT_TZ(updated_time,'America/New_York','GMT') > '${dih.last_index_time}' ">
+      >
     </entity>
   </document>
 </dataConfig>
