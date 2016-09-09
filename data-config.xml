@@ -5,8 +5,11 @@
               user="root" 
               password="password"/>
   <document>
-    <entity name="person" pk="id" 
+    <entity name="personFullImport" pk="id" 
       query="select id,firstname,lastname,description,created_time, updated_time from person" 
+      >
+    </entity>
+    <entity name="personDataImport" pk="id" 
       deltaImportQuery="select id,firstname,lastname,description,created_time, updated_time from person where id = '${dih.delta.id}'" 
       deltaQuery="select id from person where CONVERT_TZ(updated_time,'America/New_York','GMT') > '${dih.last_index_time}' ">
       >
