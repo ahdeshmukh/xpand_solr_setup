@@ -9,6 +9,7 @@ Anything marked with * is an actual Linux command which you need to run
 * git clone https://github.com/ahdeshmukh/xpand_solr_setup.git
 
 * wget http://apache.claz.org/lucene/solr/6.1.0/solr-6.1.0.tgz
+Note: Sometimes you may get a 404 error while doing wget. This is because solr is evolving and the version changes. Initially these steps were written for solr-6.1. But now it seems Lucene has deprecated that and moved on to solr-6.2. If you get 404 while doing the wget, browse to http://apache.claz.org/lucene/solr and get the latest version of solr. Change the version of the solr in this script to match the solr version that you downloaded.
 * tar xzf solr-6.1.0.tgz solr-6.1.0/bin/install_solr_service.sh --strip-components=2
 * sudo bash ./install_solr_service.sh solr-6.1.0.tgz -u amit (amit = an already existing non-root user with sudo privileges who will own the solr files. if -u is not specified the script will create a user "solr" who will own the solr files)
 After you see the output of the service which says Started LSB: Controls Apache Solr as a Service, press q to get back the control of the terminal.
