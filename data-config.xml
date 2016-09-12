@@ -3,16 +3,20 @@
               driver="com.mysql.jdbc.Driver"
               url="jdbc:mysql://127.0.0.1:3306/solr_tutorial" 
               user="root" 
-              password="password"/>
+              password=""/>
   <document>
-    <entity name="personFullImport" pk="id" 
-      query="select id,firstname,lastname,description,created_time, updated_time from person" 
+    <entity name="animalsFullImport" pk="id" 
+      query="SELECT a.id AS id, a.name AS name, a.description AS description, 
+            GROUP_CONCAT(t.name) AS tags 
+            FROM animals a
+            JOIN animals_tags at ON a.id= at.animal_id 
+            JOIN tags t ON at.tag_id = t.id 
+            GROUP BY a.id" 
       >
-    </entity>
-    <entity name="personDataImport" pk="id" 
-      deltaImportQuery="select id,firstname,lastname,description,created_time, updated_time from person where id = '${dih.delta.id}'" 
-      deltaQuery="select id from person where CONVERT_TZ(updated_time,'America/New_York','GMT') > '${dih.last_index_time}' ">
-      >
+      <field column="id" name="id"/>
+      <field column="name" name="name" />
+      <field column="name" name="name" />
+      <field column="tags" name="tags" splitBy = "," />
     </entity>
   </document>
 </dataConfig>

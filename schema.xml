@@ -2,11 +2,9 @@
 <schema name="example-data-driven-schema" version="1.6">
   <field name="_version_" type="long" indexed="true" stored="false"/>
   <field name="id" type="string" indexed="true" stored="true" required="true" multiValued="false" />
-  <field name="firstname" type="text_general" indexed="true" stored="true" required="false"  multiValued="false"/>
-  <field name="lastname" type="text_general" indexed="true" stored="true" required="false"  multiValued="false"/>
+  <field name="name" type="text_general" indexed="true" stored="true" required="false"  multiValued="false"/>
   <field name="description" type="text_general" indexed="true" stored="true" multiValued="false"/>
-  <field name="created_time" type="tdate" indexed="true" stored="true" required="false"  multiValued="false"/>
-  <field name="updated_time" type="tdate" indexed="true" stored="true" required="false"  multiValued="false"/>
+  <field name="tags" type="text_general" indexed="true" stored="true" required="false"  multiValued="true"/>
   <field name="lastIndexed" type="tdate" indexed="false" stored="true" default="NOW" multiValued="false"/>
   <!--<copyField source="*" dest="_text_"/>-->
 
