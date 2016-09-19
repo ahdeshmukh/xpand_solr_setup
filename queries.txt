@@ -1,0 +1,20 @@
+Find an animal by the name Tiger
+http://localhost:8983/solr/animals/select?fq=name:tiger&q=*:*
+
+Find an animal by the name Elephant, but only return the name and description
+http://localhost:8983/solr/animals/select?fq=name:elephant&q=*:*&fl=name,description
+
+Find all documents that have a word tiger in name or description
+http://localhost:8983/solr/animals/select?&q=name:tiger OR description:tiger
+
+
+Find all animals that are herbivores
+http://localhost:8983/solr/animals/select?fq=tags:herbivore&q=*:*
+
+
+Find all animals which are carnivore and reptile
+http://localhost:8983/solr/animals/select?fq=tags:(carnivore AND reptile)&q=*:*
+
+
+Find the number of animals in each tag. Basically, find all records group by tags. (eg: find number of herbivores, carnivores etc)
+http://localhost:8983/solr/animals/select?q=*:*&facet=true&facet.field=tags&fl=name
